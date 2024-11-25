@@ -21,6 +21,6 @@ export default function Home() {
        fermentum, euismod mauris et, efficitur lectus.
     </Typography>
     <Link style={{marginRight: 20}} href="/login">Login</Link>
-    <Link href="/register">Register</Link>
+    <Link href="/signup">Sign up</Link>
   </div>;
 }
