@@ -14,16 +14,6 @@ export default function SignUp() {
     const [emailErr, setEmailErr] = useState({mess: "", isErr: false});
     const router = useRouter();
 
-    const onChangePassword = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=> {
-        setPassword(e.target.value)
-        setPasswordErr({mess: "", isErr: false})
-    }
-
-    const onChangeEmail = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setEmail(e.target.value)
-        setEmailErr({mess: "", isErr: false})
-    }
-
     const onClickHandler = async () => {
         const api = axios.create(
             {baseURL: "http://localhost:8081"}
@@ -44,7 +34,6 @@ export default function SignUp() {
             }
 
         } catch(err: any) {
-            console.log(err.response.data)
             if(err.response.data.includes("mssql")) {
                 setEmailErr({mess: "The email you provided is taken", isErr: true});
             }
@@ -60,18 +49,27 @@ export default function SignUp() {
         <div style={{marginLeft: 20, marginRight: 20}}>
             <TextField label="Username" size="small" fullWidth  style={{marginTop: 40}} 
             onChange={(e) => setUsername(e.target.value)}/>
-            <TextField label="Password" size="small" fullWidth style={{marginTop: 20}} 
-            onChange={onChangePassword}
+            <TextField label="Password" type="password" size="small" fullWidth style={{marginTop: 20}} 
+            onChange={(e) => {
+                setPassword(e.target.value)
+                setPasswordErr({mess: "", isErr: false})
+            }}
             error={passwordErr.isErr}/>
-            <TextField label="Confirm password" size="small" fullWidth style={{marginTop: 20}} 
-            onChange={onChangePassword}
+            <TextField label="Confirm password" type="password" size="small" fullWidth style={{marginTop: 20}} 
+            onChange={(e) => {
+                setPasswordConfirm(e.target.value)
+                setPasswordErr({mess: "", isErr: false})
+            }}
             error={passwordErr.isErr}
-            helperText = {passwordErr.isErr && passwordErr.mess}/> 
-            <TextField label="Email address" size="small" fullWidth style={{marginTop: 20}} 
-            onChange={onChangeEmail}
+            helperText = {passwordErr.isErr ? passwordErr.mess : " "}/> 
+            <TextField label="Email address" size="small" fullWidth
+            onChange={(e) => {
+                setEmail(e.target.value)
+                setEmailErr({mess: "", isErr: false}) 
+            }}
             error = {emailErr.isErr}
-            helperText = {emailErr.isErr && emailErr.mess}/> 
-            <Button size="large" fullWidth variant="contained" style={{marginTop: 30}} onClick={onClickHandler}>Sign up</Button>
+            helperText = {emailErr.isErr ? emailErr.mess : " "}/> 
+            <Button size="large" fullWidth variant="contained" style={{marginRight: 5, marginTop: 20}} onClick={onClickHandler}>Sign up</Button>
         </div>
         <div style={{marginTop: 10}}>
             <Typography fontSize={14} component="span" style={{marginRight: 5}}>Have an account?</Typography>
