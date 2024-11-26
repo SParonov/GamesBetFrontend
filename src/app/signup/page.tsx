@@ -50,7 +50,7 @@ export default function SignUp() {
             }
 
             if(err.response.data.includes("Different password added on confirm password")) {
-                setPasswordErr({mess: err.data, isErr: true});
+                setPasswordErr({mess: "Different password added on confirm password", isErr: true});
             }
         }
     }
