@@ -41,6 +41,9 @@ export default function SignUp() {
             if(err.response.data.includes("Different password added on confirm password")) {
                 setPasswordErr({mess: "Different password added on confirm password", isErr: true});
             }
+            if(err.response.data.includes("Invalid email syntax")) {
+                setEmailErr({mess: "Invalid email syntax", isErr: true});
+            }
         }
     }
     
