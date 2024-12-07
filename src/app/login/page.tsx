@@ -26,6 +26,7 @@ export default function SignUp() {
             const res = await api.put("/login", obj);
 
             if(res.status == HttpStatusCode.Ok) {
+                console.log("RES: ", res.headers);
                 router.push("/games_hub");
             }
 
@@ -48,7 +49,7 @@ export default function SignUp() {
     
     return <div style={{marginLeft: '40%', marginRight: '40%', textAlign: 'center', marginTop: 100}}>
         <Typography fontSize={30} style={{marginTop: 20}}>Log in</Typography>
-        <div style={{marginLeft: 20, marginRight: 20}}>
+        <div style={{marginLeft: 20, marginRight: 20, marginTop: 40}}>
             <TextField label="Email address" size="small" fullWidth
             onChange={(e) => {
                 setEmail(e.target.value)
@@ -56,7 +57,7 @@ export default function SignUp() {
             }}
             error = {emailErr.isErr}
             helperText = {emailErr.isErr ? emailErr.mess : " "}/> 
-            <TextField label="Password" type="password" size="small" fullWidth style={{marginTop: 20}} 
+            <TextField label="Password" type="password" size="small" fullWidth style={{marginTop: 10}} 
             onChange={(e) => {
                 setPassword(e.target.value)
                 setPasswordErr({mess: "", isErr: false})
