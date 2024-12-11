@@ -1,8 +1,8 @@
 "use client"
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Button, TextField, Typography } from "@mui/material";
-import axios, { AxiosError, HttpStatusCode } from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { useRouter } from "next/navigation";
 
 export default function SignUp() {
@@ -31,19 +31,20 @@ export default function SignUp() {
 
             if(res.status == HttpStatusCode.Ok) {
                 router.push("/games_hub");
+                localStorage.setItem('sessionData', JSON.stringify(res.data));
             }
 
         } catch(err: any) {
-            if(err.response.data.includes("mssql")) {
-                setEmailErr({mess: "The email you provided is taken", isErr: true});
-            }
-
             if(err.response.data.includes("Different password added on confirm password")) {
                 setPasswordErr({mess: "Different password added on confirm password", isErr: true});
             }
             if(err.response.data.includes("Invalid email syntax")) {
                 setEmailErr({mess: "Invalid email syntax", isErr: true});
             }
+            if(err.response.data.includes("Duplicate entry")) {
+                setEmailErr({mess: "The email you provided is taken", isErr: true});
+            }
+            console.log(err)
         }
     }
     
@@ -52,20 +53,20 @@ export default function SignUp() {
         <div style={{marginLeft: 20, marginRight: 20}}>
             <TextField label="Username" size="small" fullWidth  style={{marginTop: 40}} 
             onChange={(e) => setUsername(e.target.value)}/>
-            <TextField label="Password" type="password" size="small" fullWidth style={{marginTop: 20}} 
+            <TextField label="Password" type="password" size="small" fullWidth style={{marginTop: 25}} 
             onChange={(e) => {
                 setPassword(e.target.value)
                 setPasswordErr({mess: "", isErr: false})
             }}
             error={passwordErr.isErr}/>
-            <TextField label="Confirm password" type="password" size="small" fullWidth style={{marginTop: 20}} 
+            <TextField label="Confirm password" type="password" size="small" fullWidth style={{marginTop: 25}} 
             onChange={(e) => {
                 setPasswordConfirm(e.target.value)
                 setPasswordErr({mess: "", isErr: false})
             }}
             error={passwordErr.isErr}
             helperText = {passwordErr.isErr ? passwordErr.mess : " "}/> 
-            <TextField label="Email address" size="small" fullWidth
+            <TextField label="Email address" size="small" fullWidth style={{marginTop: 5}}
             onChange={(e) => {
                 setEmail(e.target.value)
                 setEmailErr({mess: "", isErr: false}) 

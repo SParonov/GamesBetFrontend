@@ -26,24 +26,19 @@ export default function SignUp() {
             const res = await api.put("/login", obj);
 
             if(res.status == HttpStatusCode.Ok) {
-                console.log("RES: ", res.headers);
                 router.push("/games_hub");
+                localStorage.setItem('sessionData', JSON.stringify(res.data));
             }
 
         } catch(err: any) {
-            if(err.response.data.includes("Invalid email and password combination")){
-                setEmailErr({mess:"Invalid email and password combination", isErr: true})
+            if(err.response) {
+                if(err.response.data.includes("Invalid email and password combination")){
+                    setEmailErr({mess:" ", isErr: true})
+                    setPasswordErr({mess:"Invalid email and password combination", isErr: true})
+                }
+            } else {
+                alert("Има проблем със сървъра...")
             }
-            /*if(err.response.data.includes("mssql")) {
-                setEmailErr({mess: "The email you provided is taken", isErr: true});
-            }
-
-            if(err.response.data.includes("Different password added on confirm password")) {
-                setPasswordErr({mess: "Different password added on confirm password", isErr: true});
-            }
-            if(err.response.data.includes("Invalid email syntax")) {
-                setEmailErr({mess: "Invalid email syntax", isErr: true});
-            }*/
         }
     }
     
