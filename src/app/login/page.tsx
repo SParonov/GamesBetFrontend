@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button, TextField, Typography } from "@mui/material";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { useRouter } from "next/navigation";
+import Logo from "../../components/Logo";
 
 export default function SignUp() {
     const [email, setEmail] = useState("");
@@ -42,19 +43,23 @@ export default function SignUp() {
         }
     }
     
-    return <div style={{marginLeft: '40%', marginRight: '40%', textAlign: 'center', marginTop: 100}}>
+    return <>
+        <Logo />
+        <div style={{marginLeft: '40%', marginRight: '40%', textAlign: 'center', marginTop: 100}}>
         <Typography fontSize={30} style={{marginTop: 20}}>Log in</Typography>
         <div style={{marginLeft: 20, marginRight: 20, marginTop: 40}}>
             <TextField label="Email address" size="small" fullWidth
             onChange={(e) => {
                 setEmail(e.target.value)
-                setEmailErr({mess: "", isErr: false}) 
+                setEmailErr({mess: "", isErr: false})
+                setPasswordErr({mess: "", isErr: false})
             }}
             error = {emailErr.isErr}
             helperText = {emailErr.isErr ? emailErr.mess : " "}/> 
             <TextField label="Password" type="password" size="small" fullWidth style={{marginTop: 10}} 
             onChange={(e) => {
                 setPassword(e.target.value)
+                setEmailErr({mess: "", isErr: false}) 
                 setPasswordErr({mess: "", isErr: false})
             }}
             error={passwordErr.isErr}
@@ -66,4 +71,5 @@ export default function SignUp() {
             <Link href="/signup">Signup</Link>
         </div>
     </div>
+    </> 
 }

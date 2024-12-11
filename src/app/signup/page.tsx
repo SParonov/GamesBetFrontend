@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button, TextField, Typography } from "@mui/material";
 import axios, { HttpStatusCode } from "axios";
 import { useRouter } from "next/navigation";
+import Logo from "../../components/Logo";
 
 export default function SignUp() {
     const [username, setUsername] = useState("");
@@ -48,7 +49,9 @@ export default function SignUp() {
         }
     }
     
-    return <div style={{marginLeft: '40%', marginRight: '40%', textAlign: 'center', marginTop: 100}}>
+    return <>
+        <Logo />
+        <div style={{marginLeft: '40%', marginRight: '40%', textAlign: 'center', marginTop: 100}}>
         <Typography fontSize={30} style={{marginTop: 20}}>Create your new account</Typography>
         <div style={{marginLeft: 20, marginRight: 20}}>
             <TextField label="Username" size="small" fullWidth  style={{marginTop: 40}} 
@@ -80,4 +83,5 @@ export default function SignUp() {
             <Link href="/login">Login</Link>
         </div>
     </div>
+    </>
 }
