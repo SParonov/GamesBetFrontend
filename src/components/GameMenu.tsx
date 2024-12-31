@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { AppBar, Box, Button, Container, Icon, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
+import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useRouter } from "next/navigation";
 
-export default function GameMenu() {
+export default function GameMenu({current}: {current: string}) {
   const router = useRouter();
     const [userInfoIsOpen, setUserInfoIsOpen] = useState(false);
   
     const pages = ['games', 'scoreboard', 'chat', 'scheduler', 'shop'];
-    const settings = ['About', 'Logout'];
     return (
         <AppBar position="static" style={{marginLeft: '25%', marginTop: 20, width: '50%'}}>
           <Container>
@@ -18,7 +17,7 @@ export default function GameMenu() {
                   <Button
                     key={page}
                     onClick={() => router.push(`/${page}` + (page == 'games' ? '_hub' : ''))}
-                    sx={{ml: 2, my: 1, color: 'white', display: 'block'}}
+                    sx={{ml: 2, my: 1, color: 'white', display: 'block', borderBottom: page == current ? 2 : 0}}
                   >
                     {page}
                   </Button>

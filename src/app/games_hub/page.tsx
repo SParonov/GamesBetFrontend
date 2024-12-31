@@ -1,12 +1,13 @@
 "use client"
-import React from "react";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { useRef } from "react";
 import GameMenu from "../../components/GameMenu";
 import Logo from "../../components/Logo";
+import useCheckSession from "@/utils/useCheckSession";
+import { Box, Button } from "@mui/material";
+import { usePathname, useRouter } from "next/navigation";
 
 
-type sessionData = {
+export type sessionData = {
     CreatedAt: string,
     ExpiresAt: string,
     ID: string,
@@ -15,22 +16,22 @@ type sessionData = {
 
 export default function GamesHub() {
     const router = useRouter();
-    useEffect(() => {
-        const sessionData = localStorage.getItem("sessionData");
-        if (!sessionData) {
-            alert("Не съществува сесия, моля първо се логнете (или регистрирайте)");
-            router.push("/login");
-        } else {
-            const parsedSessionData: sessionData = JSON.parse(sessionData!);
-            if (Date.parse(parsedSessionData.ExpiresAt) <= Date.now()) {
-                alert("Сесията Ви е изтекла, за да продължите, моля логнете се отново");
-                router.push("/login");
-            }
-        }
-    }, [router])
-
+    const pathname = usePathname();
+    useCheckSession();
     return <>
-    <Logo />
-    <GameMenu/>
+        <Logo />
+        <GameMenu current = "games"/>
+        <div style={{position: 'absolute', left: 490, top: "20%"}}>
+            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}}} onClick={() => router.push(pathname + "/snake")}/>
+            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
+            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
+            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
+        </div>
+        <div style={{position: 'absolute', left: 490, top: "50%"}}>
+            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2}} disabled={true}/>
+            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
+            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
+            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
+        </div>
     </>
 }

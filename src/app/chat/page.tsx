@@ -1,5 +1,13 @@
-import { Typography } from "@mui/material";
+"use client"
+
+import GameMenu from "@/components/GameMenu";
+import Logo from "@/components/Logo";
+import useCheckSession from "@/utils/useCheckSession";
 
 export default function Chat() {
-    return <Typography>Chat page</Typography>
+    useCheckSession();
+    return <>
+        <Logo />
+        <GameMenu current = "chat"/>
+    </>
 }
