@@ -2,13 +2,16 @@ import { sessionData } from "@/app/games_hub/page";
 import { useRouter } from "next/navigation";
 import { useRef, useEffect } from "react";
 
-export default function useCheckSession() {
+export default function useCheckSession(dependency?: any) {
     const router = useRouter();
     const hasRun = useRef(false);
+
     useEffect(() => {
-        if (hasRun.current) return;
-        hasRun.current = true;
-        
+        if (dependency == null) {
+            if (hasRun.current) return;
+            hasRun.current = true;
+        }
+
         try {
             const sessionData = localStorage.getItem("sessionData");
             if (!sessionData) {
@@ -27,5 +30,5 @@ export default function useCheckSession() {
             router.push("/login");
         }
 
-    }, [router])
+    }, [router, dependency])
 }
