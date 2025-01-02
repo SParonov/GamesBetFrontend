@@ -1,8 +1,8 @@
 "use client"
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Button, TextField, Typography } from "@mui/material";
-import axios, { AxiosError, HttpStatusCode } from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { useRouter } from "next/navigation";
 import Logo from "../../components/Logo";
 
@@ -68,7 +68,7 @@ export default function SignUp() {
         </div>
         <div style={{marginTop: 10}}>
             <Typography fontSize={14} component="span" style={{marginRight: 5}}>Don't have an account?</Typography>
-            <Link href="/signup">Signup</Link>
+            <Link href="/signup" style={{color: 'purple'}} >Signup</Link>
         </div>
     </div>
     </> 

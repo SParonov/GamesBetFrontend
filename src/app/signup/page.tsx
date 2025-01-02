@@ -80,7 +80,7 @@ export default function SignUp() {
         </div>
         <div style={{marginTop: 10}}>
             <Typography fontSize={14} component="span" style={{marginRight: 5}}>Have an account?</Typography>
-            <Link href="/login">Login</Link>
+            <Link href="/login" style={{color: 'purple'}}>Login</Link>
         </div>
     </div>
     </>

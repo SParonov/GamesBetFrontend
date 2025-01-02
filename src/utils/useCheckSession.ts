@@ -21,6 +21,7 @@ export default function useCheckSession(dependency?: any) {
                 const parsedSessionData: sessionData = JSON.parse(sessionData!);
                 if (Date.parse(parsedSessionData.ExpiresAt) <= Date.now()) {
                     alert("Сесията Ви е изтекла, за да продължите, моля логнете се отново");
+                    localStorage.removeItem("sessionData");
                     router.push("/login");
                 }
             }

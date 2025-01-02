@@ -1,10 +1,12 @@
 "use client";
 
-import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import useCheckSession from "@/utils/useCheckSession";
-import { sessionData } from "@/app/games_hub/page";
 import api from "../../../utils/axios";
 import { Typography } from "@mui/material";
+import BackButton from "@/components/BackButton";
+import getUserEmail from "@/utils/getUserEmail";
+
 
 const GRID_SIZE = 30; // Number of cells in each row and column
 const INITIAL_SNAKE_LENGTH = 3; // Initial length of the snake
@@ -32,15 +34,6 @@ export default function Snake() {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useCheckSession(gameHasStarted);
-
-  const getUserEmail = () => {
-    const sessionData = localStorage.getItem("sessionData");
-    if(!sessionData) return;
-    const parsedSessionData: sessionData = JSON.parse(sessionData!);
-    const userEmail= parsedSessionData["UserEmail"];
-
-    return userEmail;
-  }
   
   useEffect(() => {
     if (gridRef.current) {
@@ -183,7 +176,8 @@ export default function Snake() {
 
   return (
     <div style={{background: "linear-gradient(45deg, #9c27b0, #00bcd4)"}}>
-        <Typography style={{position: "absolute", left: "39%", fontSize: 60, color: 'white'}}>SNAKE GAME</Typography>
+        <BackButton />
+        <Typography style={{position: "absolute", left: 755, fontSize: 60, color: 'white'}}>SNAKE GAME</Typography>
         <Typography style={{position: 'absolute', left: "34%", fontSize: 20, top: "14%", color: 'white'}}>Press Enter to Start</Typography>
         <div
         className="flex justify-center items-center h-screen"
