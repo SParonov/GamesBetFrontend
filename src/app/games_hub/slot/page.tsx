@@ -7,6 +7,7 @@ import { Button, Typography } from '@mui/material';
 import './SlotMachine.css'; // Create this CSS file for styling
 import api from '@/utils/axios';
 import getUserEmail from '@/utils/getUserEmail';
+import getHighScore from '@/utils/getHighScore';
 
 const SYMBOLS = ['🍒', '🍋', '🍉', '⭐', '🔔', '7️⃣']; // Slot machine SYMBOLS
 
@@ -20,18 +21,7 @@ export default function SlotMachine() {
   useCheckSession(spinning);
 
   useEffect(() => {
-    const func = async () => {
-      try {
-        const res = await api.get(`/getGamesData/game2/${getUserEmail()}`);
-        if(res.data) {
-          setHighScore(res.data.highscore);
-        }
-      } catch(err: any) {
-        console.log(err);
-      }
-    }
-
-    func();
+    getHighScore(setHighScore, 'game2');
   }, [])
 
   

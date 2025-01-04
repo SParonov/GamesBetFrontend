@@ -6,6 +6,7 @@ import api from "../../../utils/axios";
 import { Typography } from "@mui/material";
 import BackButton from "@/components/BackButton";
 import getUserEmail from "@/utils/getUserEmail";
+import getHighScore from "@/utils/getHighScore";
 
 
 const GRID_SIZE = 30; // Number of cells in each row and column
@@ -40,19 +41,7 @@ export default function Snake() {
         gridRef.current.focus();
     }
 
-    const func = async () => {
-      try {
-        const res = await api.get(`/getGamesData/game1/${getUserEmail()}`);
-        if(res.data) {
-          setHighScore(res.data.highscore);
-        }
-      } catch(err: any) {
-        console.log(err);
-      }
-    }
-
-    func();
-
+    getHighScore(setHighScore, 'game1');
   }, [])
 
   useEffect(() => {

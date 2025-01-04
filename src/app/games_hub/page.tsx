@@ -21,13 +21,13 @@ export default function GamesHub() {
     return <>
         <Logo />
         <GameMenu current = "games"/>
-        <div style={{position: 'absolute', left: 490, top: "20%"}}>
+        <div style={{position: 'fixed', display: 'flex', justifyContent:'center', top: "20%", left: 0, right: 0}}>
             <GameButton marginLeft={0} game="/snake" imgUrl='/img/snake_game.png' unlocked={true}/>
             <GameButton marginLeft={10} game="/slot" imgUrl='/img/slot_machine_game.avif' unlocked={true}/>
-            <GameButton marginLeft={10} game="/flappyBird" imgUrl='/img/flappy_bird_game.png' unlocked={true}/>
+            <GameButton marginLeft={10} game="/flappy_bird" imgUrl='/img/flappy_bird_game.png' unlocked={true}/>
             <GameButton marginLeft={10} game="/slot" imgUrl='/img/slot_machine_game.avif' unlocked={false}/>
         </div>
-        <div style={{position: 'absolute', left: 490, top: "50%"}}>
+        <div style={{position: 'fixed', display: 'flex', justifyContent:'center', top: "50%", left: 0, right: 0}}>
             <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2}} disabled={true}/>
             <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
             <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
