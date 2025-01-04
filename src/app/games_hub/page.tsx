@@ -23,8 +23,8 @@ export default function GamesHub() {
         <GameMenu current = "games"/>
         <div style={{position: 'absolute', left: 490, top: "20%"}}>
             <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}}} onClick={() => router.push(pathname + "/snake")}/>
-            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}}} onClick={() => router.push(pathname + "/slot")}/>
-            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}}} onClick={() => router.push(pathname + "/flappyBird")}/>
+            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, marginLeft: 10}} onClick={() => router.push(pathname + "/slot")}/>
+            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, marginLeft: 10}} onClick={() => router.push(pathname + "/flappyBird")}/>
             <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
         </div>
         <div style={{position: 'absolute', left: 490, top: "50%"}}>

@@ -178,7 +178,7 @@ export default function Snake() {
     <div style={{background: "linear-gradient(45deg, #9c27b0, #00bcd4)"}}>
         <BackButton />
         <Typography style={{position: "absolute", left: 755, fontSize: 60, color: 'white'}}>SNAKE GAME</Typography>
-        <Typography style={{position: 'absolute', left: "34%", fontSize: 20, top: "14%", color: 'white'}}>Press Enter to Start</Typography>
+        <Typography style={{position: 'absolute', left: "35%", fontSize: 20, top: "14%", color: 'white'}}>Press Enter to Start</Typography>
         <div
         className="flex justify-center items-center h-screen"
         onKeyDown={handleKeyPress}
@@ -209,7 +209,7 @@ export default function Snake() {
         </div>
         </div>
         <div style={{position: 'absolute', top: "40%", left: "20%"}}>
-            <Typography style={{ fontSize: 25, marginBottom: 20, color: 'white'}}>Current Score: {currScore}</Typography>
+            <Typography style={{ fontSize: 25, marginBottom: 20, color: 'white'}}>Coins earned: {currScore}</Typography>
             <Typography style={{ fontSize: 25, color: 'white'}}>High Score: {highScore}</Typography>
         </div>
     </div>

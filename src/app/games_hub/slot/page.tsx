@@ -1,22 +1,65 @@
 'use client'
-import React, { useState } from 'react';
-import './SlotMachine.css'; // Create this CSS file for styling
+import React, { useCallback, useEffect, useState } from 'react';
+import useCheckSession from '@/utils/useCheckSession';
+import BackButton from '@/components/BackButton';
+import { Button, Typography } from '@mui/material';
 
-const SlotMachine = () => {
-  const symbols = ['🍒', '🍋', '🍉', '⭐', '🔔', '7️⃣']; // Slot machine symbols
+import './SlotMachine.css'; // Create this CSS file for styling
+import api from '@/utils/axios';
+import getUserEmail from '@/utils/getUserEmail';
+
+const SYMBOLS = ['🍒', '🍋', '🍉', '⭐', '🔔', '7️⃣']; // Slot machine SYMBOLS
+
+export default function SlotMachine() {
   const [reels, setReels] = useState(['?', '?', '?']);
   const [spinning, setSpinning] = useState(false);
   const [message, setMessage] = useState('');
+  const [currScore, setCurrScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+
+  useCheckSession(spinning);
+
+  useEffect(() => {
+    const func = async () => {
+      try {
+        const res = await api.get(`/getGamesData/game2/${getUserEmail()}`);
+        if(res.data) {
+          setHighScore(res.data.highscore);
+        }
+      } catch(err: any) {
+        console.log(err);
+      }
+    }
+
+    func();
+  }, [])
+
+  
+  useEffect(() => {
+    if(spinning == true) return;
+
+    const func = async () => {
+      try {
+        await api.put(`/updateGamesData/game2/${getUserEmail()}`, {coins: currScore, highscore: highScore});
+        
+    } catch(err: any) {
+        console.log(err);
+    }
+  }
+    func();
+  }, [spinning])
 
   const spinReels = () => {
     setSpinning(true);
     setMessage('');
+    setCurrScore(0);
+
 
     const interval = setInterval(() => {
       setReels([
-        symbols[Math.floor(Math.random() * symbols.length)],
-        symbols[Math.floor(Math.random() * symbols.length)],
-        symbols[Math.floor(Math.random() * symbols.length)],
+        SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+        SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+        SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
       ]);
     }, 100);
 
@@ -24,9 +67,9 @@ const SlotMachine = () => {
       clearInterval(interval);
 
       const finalReels = [
-        symbols[Math.floor(Math.random() * symbols.length)],
-        symbols[Math.floor(Math.random() * symbols.length)],
-        symbols[Math.floor(Math.random() * symbols.length)],
+        SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+        SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+        SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
       ];
 
       setReels(finalReels);
@@ -35,17 +78,60 @@ const SlotMachine = () => {
     }, 2000); // Spin duration (2 seconds)
   };
 
-  const checkResult = (finalReels: any[]) => {
-    if (finalReels[0] === finalReels[1] && finalReels[1] === finalReels[2]) {
-      setMessage('🎉 Jackpot! You won!');
+  const checkResult = useCallback((finalReels: any[]) => {
+    let coinsEarned = 0;
+    if (finalReels[0] == finalReels[1] && finalReels[1] == finalReels[2]) {
+      if (finalReels[0] == '7️⃣') {
+        setMessage('🎉 Jackpot! You won 1000 coins!');
+        coinsEarned = 1000;
+      } else {
+        setMessage('🎉 Nice! You won 500 coins!');
+        coinsEarned = 500;
+      }
     } else {
-      setMessage('Try again!');
-    }
-  };
+      if (finalReels[0] == finalReels[1]) {
 
-  return (
-    <div className="slot-machine">
-      <h1>Slot Machine</h1>
+        if(finalReels[0] == '7️⃣') {
+          setMessage('You got two 7\'s! You won 250 coins!');
+          coinsEarned = 250;
+        } else {
+          setMessage('You got two matching symbols! You won 50 coins!');
+          coinsEarned = 50;
+        }
+
+      } else if (finalReels[1] == finalReels[2]) {
+
+          if(finalReels[1] == '7️⃣') {
+            setMessage('You got two 7\'s! You won 250 coins!');
+            coinsEarned = 250;
+          } else {
+            setMessage('You got two matching symbols! You won 50 coins!');
+            coinsEarned = 50;
+          }
+
+      } else if (finalReels[0] == finalReels[2]) {
+
+          if(finalReels[0] == '7️⃣') {
+            setMessage('You got two 7\'s! You won 250 coins!');
+            coinsEarned = 250;
+          } else {
+            setMessage('You got two matching symbols! You won 50 coins!');
+            coinsEarned = 50;
+          }
+      } else {
+        setMessage('Try again!');
+      }
+    }
+    setCurrScore(coinsEarned);
+    if(coinsEarned > highScore) {
+      setHighScore(coinsEarned);
+    }
+  }, [highScore]);
+
+  return <div style={{background: "linear-gradient(45deg, #00bcd4, #9c27b0)", height: '100vh'}}>
+    <BackButton />
+    <Typography style={{display: 'flex', justifyContent: 'center', fontSize: 60, color: 'white'}}>SLOT MACHINE</Typography>
+    <div className="slot-machine" style={{marginTop: 100}}>
       <div className="reels">
         {reels.map((symbol, index) => (
           <div key={index} className="reel">
@@ -53,12 +139,13 @@ const SlotMachine = () => {
           </div>
         ))}
       </div>
-      <button onClick={spinReels} disabled={spinning}>
+      <Button style={{width: '20%'}} onClick={spinReels} disabled={spinning} variant='contained' color='secondary' size='large'>
         {spinning ? 'Spinning...' : 'Spin'}
-      </button>
-      <p>{message}</p>
+      </Button>
+      <Typography style = {{color: 'white', marginTop: 20, fontSize: 26}}>{message}</Typography>
+      <div style={{display: 'flex', justifyContent: 'center', marginTop: 200, position: 'fixed', top: '25%', left: 0, right: 0}}>
+            <Typography style={{ fontSize: 25, color: 'white'}}>Highest winnings: {highScore}</Typography>
+        </div>
     </div>
-  );
+  </div>
 };
-
-export default SlotMachine;
