@@ -29,13 +29,9 @@
 "use client"
 import React, { useState, useRef, useEffect } from "react";
 import {
-  styled,
-  Box,
   TextField,
   IconButton,
-  Paper,
   Typography,
-  Avatar,
   Stack,
   Container,
 } from "@mui/material";
@@ -48,34 +44,53 @@ import MessageBubble from "@/components/chat/MessageBubble";
 import MessageContent from "@/components/chat/MessageContent";
 import InputContainer from "@/components/chat/InputContainer";
 import useCheckSession from "@/utils/useCheckSession";
+import getUserEmail from "@/utils/getUserEmail";
+import api from "@/utils/axios";
+import { HttpStatusCode } from "axios";
 
-const dummyMessages = [
-  {
-    id: 1,
-    text: "Hey! How are you doing?",
-    isUser: false,
-    timestamp: "10:00 AM",
-  },
-  {
-    id: 2,
-    text: "I'm doing great! Thanks for asking. How about you?",
-    isUser: true,
-    timestamp: "10:02 AM",
-  },
-  {
-    id: 3,
-    text: "I'm good too! Just working on some new projects.",
-    isUser: false,
-    timestamp: "10:05 AM",
-  },
-];
+
+type Message = {
+  id: number;
+  text: string;
+  email: string | undefined;
+  timestamp: string;
+}
 
 const ChatUI = () => {
-  const [messages, setMessages] = useState(dummyMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const [currEmail, setCurrEmail] = useState<string | undefined>("");
+  const ws = useRef<WebSocket | null>(null);
 
   useCheckSession();
+
+  useEffect(() => {
+    const email = getUserEmail();
+    setCurrEmail(email);
+
+    ws.current = new WebSocket("ws://localhost:8081/ws");
+    ws.current.onopen = async () => {
+      try {
+        const res = await api.get("/getChatHistory");
+        setMessages(res.data.ChatHistory);
+      } catch(err: any) {
+        console.log(err);
+      }
+    };
+
+    ws.current.onmessage = (event) => {
+      const message = JSON.parse(event.data);     
+      setMessages((prevMessages) => [...prevMessages, message]);
+    };
+    
+    const socket = ws.current;
+
+    return () => {
+        socket.close();
+    };
+  }, []);
+
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -85,22 +100,28 @@ const ChatUI = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (newMessage.trim()) {
       const currentTime = new Date().toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
       });
-      setMessages([
-        ...messages,
-        {
-          id: messages.length + 1,
-          text: newMessage,
-          isUser: true,
-          timestamp: currentTime,
-        },
-      ]);
+
+      const messObj = {
+        id: messages.length + 1,
+        text: newMessage,
+        email: currEmail,
+        timestamp: currentTime,
+      };
+
+      ws.current?.send(JSON.stringify(messObj));
       setNewMessage("");
+
+      try {
+        await api.post("/saveMessToChatHistory", messObj)
+      } catch(err: any) {
+        console.log(err);
+      }
     }
   };
 
@@ -121,13 +142,13 @@ const ChatUI = () => {
             <div key={message.id}>
             <Typography  style={{ 
                 fontSize: 12,
-                marginLeft: message.isUser ? 0 : "16px", 
-                marginRight: message.isUser ? "16px" : 0,
+                marginLeft: (message.email == currEmail) ? 0 : "16px", 
+                marginRight: (message.email == currEmail) ? "16px" : 0,
                 display: "flex",
-                flexDirection: message.isUser ? "row-reverse" : "row",
-                }}>Username</Typography>
-            <MessageBubble isUser={message.isUser}>
-              <MessageContent isUser={message.isUser}>
+                flexDirection: (message.email == currEmail) ? "row-reverse" : "row",
+                }}>{message.email?.split("@")[0]}</Typography>
+            <MessageBubble isUser={message.email == currEmail}>
+              <MessageContent isUser={message.email == currEmail}>
                 <Typography variant="body1" component="div">
                   {message.text}
                 </Typography>

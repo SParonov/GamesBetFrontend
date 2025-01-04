@@ -2,9 +2,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Button, TextField, Typography } from "@mui/material";
-import axios, { HttpStatusCode } from "axios";
+import { HttpStatusCode } from "axios";
 import { useRouter } from "next/navigation";
 import Logo from "../../components/Logo";
+import api from "@/utils/axios";
 
 export default function SignUp() {
     const [email, setEmail] = useState("");
@@ -14,10 +15,6 @@ export default function SignUp() {
     const router = useRouter();
 
     const onClickHandler = async () => {
-        const api = axios.create(
-            {baseURL: "http://localhost:8081"}
-        )
-
         try {
             const obj =  JSON.stringify({
                 password,
