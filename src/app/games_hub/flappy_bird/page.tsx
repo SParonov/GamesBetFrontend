@@ -1,8 +1,6 @@
 "use client";
 import BackButton from "@/components/BackButton";
-import api from "@/utils/axios";
 import getHighScore from "@/utils/getHighScore";
-import getUserEmail from "@/utils/getUserEmail";
 import updateGameData from "@/utils/updateGameData";
 import useCheckSession from "@/utils/useCheckSession";
 import styled from "@emotion/styled";

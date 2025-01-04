@@ -2,11 +2,10 @@
 
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import useCheckSession from "@/utils/useCheckSession";
-import api from "../../../utils/axios";
 import { Typography } from "@mui/material";
 import BackButton from "@/components/BackButton";
-import getUserEmail from "@/utils/getUserEmail";
 import getHighScore from "@/utils/getHighScore";
+import updateGameData from "@/utils/updateGameData";
 
 
 const GRID_SIZE = 30; // Number of cells in each row and column
@@ -47,21 +46,13 @@ export default function Snake() {
   useEffect(() => {
     if(gameOver == false) return;
 
-    const func = async () => {
-      try {
-
-        await api.put(`/updateGamesData/game1/${getUserEmail()}`, {coins: currScore, highscore: highScore});
-    } catch(err: any) {
-        console.log(err);
-    }
-  }
-    func();
+    updateGameData('game1', currScore, highScore);
   }, [gameOver])
 
 
   useEffect(() => {
     if (!gameOver && gameHasStarted) {
-      const interval = setInterval(moveSnake, 45); // Adjust snake speed here
+      const interval = setInterval(moveSnake, 45);
       return () => clearInterval(interval);
     }
   }, [snake, direction, gameHasStarted]);

@@ -8,8 +8,10 @@ import './SlotMachine.css'; // Create this CSS file for styling
 import api from '@/utils/axios';
 import getUserEmail from '@/utils/getUserEmail';
 import getHighScore from '@/utils/getHighScore';
+import updateGameData from '@/utils/updateGameData';
 
 const SYMBOLS = ['🍒', '🍋', '🍉', '⭐', '🔔', '7️⃣']; // Slot machine SYMBOLS
+const SPIN_TAX = 10;
 
 export default function SlotMachine() {
   const [reels, setReels] = useState(['?', '?', '?']);
@@ -17,29 +19,35 @@ export default function SlotMachine() {
   const [message, setMessage] = useState('');
   const [currScore, setCurrScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
+  const [email, setEmail] = useState<string | undefined>("");
 
-  useCheckSession(spinning);
+  useCheckSession();
 
   useEffect(() => {
+    setEmail(getUserEmail());
     getHighScore(setHighScore, 'game2');
   }, [])
 
-  
   useEffect(() => {
     if(spinning == true) return;
 
-    const func = async () => {
-      try {
-        await api.put(`/updateGamesData/game2/${getUserEmail()}`, {coins: currScore, highscore: highScore});
-        
-    } catch(err: any) {
-        console.log(err);
-    }
-  }
-    func();
+    updateGameData('game2', currScore, highScore);
+
   }, [spinning])
 
-  const spinReels = () => {
+
+  const spinReels = async () => {
+    try {
+      const res = await api.put("/updateCoins", {coins: SPIN_TAX, email: email});
+
+      if(!res.data.EnoughCoins) {
+        alert("Not enough coins");
+        return;
+      }
+    } catch(err: any) {
+      console.log(err);
+    }
+
     setSpinning(true);
     setMessage('');
     setCurrScore(0);
@@ -130,7 +138,7 @@ export default function SlotMachine() {
         ))}
       </div>
       <Button style={{width: '20%'}} onClick={spinReels} disabled={spinning} variant='contained' color='secondary' size='large'>
-        {spinning ? 'Spinning...' : 'Spin'}
+        {spinning ? 'Spinning...' : 'Spin (10 coins)'}
       </Button>
       <Typography style = {{color: 'white', marginTop: 20, fontSize: 26}}>{message}</Typography>
       <div style={{display: 'flex', justifyContent: 'center', marginTop: 200, position: 'fixed', top: '25%', left: 0, right: 0}}>
