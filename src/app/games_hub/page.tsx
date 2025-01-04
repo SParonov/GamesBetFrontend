@@ -3,9 +3,9 @@ import React, { useRef } from "react";
 import GameMenu from "../../components/GameMenu";
 import Logo from "../../components/Logo";
 import useCheckSession from "@/utils/useCheckSession";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
-
+import GameButton from "@/components/GameButton";
 
 export type sessionData = {
     CreatedAt: string,
@@ -22,10 +22,10 @@ export default function GamesHub() {
         <Logo />
         <GameMenu current = "games"/>
         <div style={{position: 'absolute', left: 490, top: "20%"}}>
-            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}}} onClick={() => router.push(pathname + "/snake")}/>
-            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, marginLeft: 10}} onClick={() => router.push(pathname + "/slot")}/>
-            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, marginLeft: 10}} onClick={() => router.push(pathname + "/flappyBird")}/>
-            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
+            <GameButton marginLeft={0} game="/snake" imgUrl='/img/snake_game.png' unlocked={true}/>
+            <GameButton marginLeft={10} game="/slot" imgUrl='/img/slot_machine_game.avif' unlocked={true}/>
+            <GameButton marginLeft={10} game="/flappyBird" imgUrl='/img/flappy_bird_game.png' unlocked={true}/>
+            <GameButton marginLeft={10} game="/slot" imgUrl='/img/slot_machine_game.avif' unlocked={false}/>
         </div>
         <div style={{position: 'absolute', left: 490, top: "50%"}}>
             <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2}} disabled={true}/>
