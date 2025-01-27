@@ -1,56 +1,37 @@
-import { useState } from "react";
 import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useRouter } from "next/navigation";
+import LogoutButton from "./LogoutButton";
 
 export default function GameMenu({current}: {current: string}) {
   const router = useRouter();
-    const [userInfoIsOpen, setUserInfoIsOpen] = useState(false);
-  
-    const pages = ['games', 'scoreboard', 'chat', 'scheduler', 'shop'];
-    return (
-        <AppBar position="static" style={{marginLeft: '25%', marginTop: 20, width: '50%'}}>
-          <Container>
-            <Toolbar>
-              <Box sx={{ flexGrow: 1, display: { md: 'flex' }}}>
-                {pages.map((page) => (
-                  <Button
-                    key={page}
-                    onClick={() => router.push(`/${page}` + (page == 'games' ? '_hub' : ''))}
-                    sx={{ml: 2, my: 1, color: 'white', display: 'block', borderBottom: page == current ? 2 : 0}}
-                  >
-                    {page}
-                  </Button>
-                ))}
-              </Box>
-              <Box>
-                <Tooltip title="User info">
-                  <IconButton onClick={() => setUserInfoIsOpen(true)} sx={{ p: 0 }}>
-                    <AccountCircleIcon style={{color: 'white'}}/>
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  style={{marginLeft: '72%', marginTop: -30}}
-                  open={userInfoIsOpen}
-                  onClose={() => setUserInfoIsOpen(false)}
+
+  const pages = ['games', 'scoreboard', 'chat', 'activities', 'shop', 'scheduler'];
+  return <>
+      <AppBar position="static" style={{marginLeft: '25%', marginTop: 20, width: '50%'}}>
+        <Container>
+          <Toolbar>
+            <Box sx={{ flexGrow: 1, display: { md: 'flex' }}}>
+              {pages.map((page) => (
+                <Button
+                  key={page}
+                  onClick={() => router.push(`/${page}` + (page == 'games' ? '_hub' : ''))}
+                  sx={{ml: 2, my: 1, color: 'white', display: 'block', borderBottom: page == current ? 2 : 0}}
                 >
-                  <MenuItem onClick={() => {
-                      setUserInfoIsOpen(false);
-                      router.push("/user_info")
-                    }}>
-                      <Typography sx={{ textAlign: 'center' }}>About</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={() => {
-                      setUserInfoIsOpen(false);
-                      router.push("/login");
-                      localStorage.removeItem("sessionData");
-                    }}>
-                      <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
-                  </MenuItem>
-                </Menu>
-              </Box>
-            </Toolbar>
-          </Container>
-        </AppBar>
-      );
+                  {page}
+                </Button>
+              ))}
+            </Box>
+            <Box>
+              <Tooltip title="User info">
+                <IconButton onClick={() => router.push("/user_info")} sx={{ p: 0 }}>
+                  <AccountCircleIcon style={{color: 'white'}}/>
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <LogoutButton />
+  </>
 }

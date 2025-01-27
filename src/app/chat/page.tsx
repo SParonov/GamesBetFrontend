@@ -46,7 +46,6 @@ import InputContainer from "@/components/chat/InputContainer";
 import useCheckSession from "@/utils/useCheckSession";
 import getUserEmail from "@/utils/getUserEmail";
 import api from "@/utils/axios";
-import { HttpStatusCode } from "axios";
 
 
 type Message = {

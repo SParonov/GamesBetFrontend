@@ -63,7 +63,6 @@ export default function FlappyBird() {
 
   useEffect(() => {
     if(isStart == true) return;
-    console.log(score);
     updateGameData("game3", score, highScore);
   }, [isStart])
 
