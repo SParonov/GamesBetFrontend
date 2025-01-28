@@ -20,6 +20,8 @@ import GameMenu from "@/components/GameMenu";
 import { DataGrid } from "@mui/x-data-grid";
 import { friendsCol, invite } from "@/utils/datagrid";
 import api from "@/utils/axios";
+import UserSelector from "@/components/UserSelector";
+import getFriends from "@/utils/getFriends";
 
 export default function UserInfo() {
   const [friends, setFriends] = useState([]);
@@ -41,16 +43,6 @@ export default function UserInfo() {
     setEmail(email);
   }, []);
 
-  const getFriends = async () => {
-    try {
-      const res = await api.get(`/getFriends/${getUserEmail()}`);
-      if (res.data.friends) {
-        setFriends(res.data.friends.map((email: string) => ({ id: email })));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const getPottentialNewFriends = async () => {
     try {
@@ -65,7 +57,7 @@ export default function UserInfo() {
       try {
           const res = await api.get(`/getFriendInvites/${getUserEmail()}`);
           if (res.data.invites) {
-              setInvites(res.data.invites.map((email:string) => ({id: email, confirm: () => <Button/>, decline: 'decline'})));
+              setInvites(res.data.invites.map((email:string) => ({id: email})));
           }
         } catch (err) {
           console.log(err);
@@ -73,7 +65,7 @@ export default function UserInfo() {
   };
 
   useEffect(() => {
-    getFriends();
+    getFriends(setFriends, true);
     getInvites();
     getPottentialNewFriends();
   }, [refresh]);
@@ -93,8 +85,7 @@ export default function UserInfo() {
     }
   };
 
-  return (
-    <>
+  return <>
       <Logo />
       <GameMenu current="" />
       <div style={{ textAlign: "center" }}>
@@ -102,7 +93,7 @@ export default function UserInfo() {
           User Info
         </Typography>
       </div>
-      <div style={{ position: "absolute", top: 250, left: 170 }}>
+      <div style={{ position: "absolute", top: 250, marginLeft: '25%' }}>
         <Typography style={{ fontSize: 30 }}>Email: {email}</Typography>
         <div style={{ position: "absolute", top: 100, width: 500 }}>
           <Typography style={{ fontSize: 30 }} component="span">
@@ -152,15 +143,15 @@ export default function UserInfo() {
             rows={friends}
             hideFooter
             sx={{
-                ".MuiDataGrid-cell": {
-                    outline: 'none !important',
-                    fontSize: 20
-                },
-                ".MuiDataGrid-cell p": {
-                  outline: 'none',
-                  fontSize: 20
-                }
-              }}
+              ".MuiDataGrid-cell": {
+                outline: "none !important",
+                fontSize: 20,
+              },
+              ".MuiDataGrid-cell p": {
+                outline: "none",
+                fontSize: 20,
+              },
+            }}
           />
           <Button
             style={{ position: "absolute", top: 460, left: 260 }}
@@ -193,91 +184,28 @@ export default function UserInfo() {
             rows={invites}
             hideFooter
             sx={{
-                ".MuiDataGrid-cell": {
-                    outline: 'none !important',
-                    fontSize: 20
-                },
-                ".MuiDataGrid-cell p": {
-                  outline: 'none',
-                  fontSize: 20
-                }
-              }}
+              ".MuiDataGrid-cell": {
+                outline: "none !important",
+                fontSize: 20,
+              },
+              ".MuiDataGrid-cell p": {
+                outline: "none",
+                fontSize: 20,
+              },
+            }}
           />
         </div>
-        <div></div>
-        <div>
-          <Typography
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 1100,
-              fontSize: 30,
-              width: 250,
-            }}
-          >
-            Game invites:
-          </Typography>
-          <DataGrid
-            style={{
-              position: "absolute",
-              width: 510,
-              height: 500,
-              top: 50,
-              left: 1100,
-            }}
-            columns={invite(setRefresh)}
-            hideFooter
-            sx={{
-                ".MuiDataGrid-cell": {
-                    outline: 'none !important',
-                    fontSize: 20
-                },
-                ".MuiDataGrid-cell p": {
-                  outline: 'none',
-                  fontSize: 20
-                }
-              }}
-          />
-          <div>
-            <Snackbar
-              open={openSnackbar}
-              autoHideDuration={1000}
-              onClose={() => setOpenSnackbar(false)}
-            >
-              <Alert
-                onClose={() => setOpenSnackbar(false)}
-                severity={isError ? "error" : "success"}
-              >
-                {snackbarMessage}
-              </Alert>
-            </Snackbar>
-            <Dialog
-              open={openDialog}
-              onClose={() => setOpenDialog(false)}
-              maxWidth="sm"
-              fullWidth
-            >
-              <DialogTitle>Potential Friends</DialogTitle>
-              <DialogContent style={{ maxHeight: 400, overflowY: "auto" }}>
-                <List>
-                  {potentialFriends.map((email, index) => (
-                    <ListItem key={index}>
-                      <Button onClick={() => sendInvite(email)}>
-                        {index}. {email}
-                      </Button>
-                    </ListItem>
-                  ))}
-                </List>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setOpenDialog(false)} color="primary">
-                  Close
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </div>
-        </div>
+        <UserSelector
+          openDialog={openDialog}
+          openSnackbar={openSnackbar}
+          setOpenDialog={setOpenDialog}
+          setOpenSnackbar={setOpenSnackbar}
+          handler={sendInvite}
+          isError={isError}
+          snackbarMessage={snackbarMessage}
+          friends={potentialFriends}
+          headerMessage={"Potential Friends"}
+        />
       </div>
     </>
-  );
 }

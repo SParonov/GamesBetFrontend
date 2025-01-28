@@ -1,9 +1,7 @@
 "use client"
-import React, { useRef } from "react";
 import GameMenu from "../../components/GameMenu";
 import Logo from "../../components/Logo";
 import useCheckSession from "@/utils/useCheckSession";
-import { Button } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import GameButton from "@/components/GameButton";
 
@@ -25,13 +23,11 @@ export default function GamesHub() {
             <GameButton marginLeft={0} game="/snake" imgUrl='/img/snake_game.png' unlocked={true}/>
             <GameButton marginLeft={10} game="/slot" imgUrl='/img/slot_machine_game.avif' unlocked={true}/>
             <GameButton marginLeft={10} game="/flappy_bird" imgUrl='/img/flappy_bird_game.png' unlocked={true}/>
-            <GameButton marginLeft={10} game="/slot" imgUrl='/img/slot_machine_game.avif' unlocked={false}/>
+            <GameButton marginLeft={10} game="/" imgUrl='/img/slot_machine_game.avif' unlocked={false}/>
         </div>
         <div style={{position: 'fixed', display: 'flex', justifyContent:'center', top: "50%", left: 0, right: 0}}>
-            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2}} disabled={true}/>
-            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
-            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
-            <Button sx={{width: 175, height: 175, backgroundColor: '#007FFF', '&:hover': {backgroundColor: '#0066CC'}, opacity: 0.2, marginLeft: 10}} disabled={true}/>
+            <GameButton marginLeft={0} game="/online_gateway?game=tic_tac_toe" imgUrl='/img/tic_tac_toe.jpg' unlocked={true}/>
+            <GameButton marginLeft={10} game="/" imgUrl='/img/slot_machine_game.avif' unlocked={false}/>
         </div>
     </>
 }

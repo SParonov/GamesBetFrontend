@@ -10,9 +10,25 @@ export const friendsCol: GridColDef[] = [
 ];
 
 export const scheduler: GridColDef[] = [
-    {field: 'id', headerName: 'Friend', width: 300},
-    {field: 'date', headerName: 'Date', width: 290},
-    {field: 'button', headerName: 'Start Game'}
+    {field: 'rowID'},
+    {field: 'scheduleID'},
+    {field: 'friend', headerName: 'Friend', width: 300},
+    {field: 'date', headerName: 'Date', width: 300},
+    {field: 'game', headerName: 'Game', width: 200},
+    {field: 'button', headerName: 'Start Game', width: 150, renderCell: (params) => {
+
+    const gameStartDate = new Date(params.row.date);
+    const now = new Date();
+
+    if (now > gameStartDate) {
+        return <IconButton style={{marginLeft: 10, color: 'green'}} onClick = {() => console.log("clicked")}>
+            <CheckBoxIcon />
+        </IconButton>
+    } else {
+        return <IconButton style={{marginLeft: 10}} disabled>
+                <CancelIcon />
+            </IconButton>
+    }}}
 ];
 
 const handleInvite = async (params: GridRenderCellParams<any, any, any, GridTreeNodeWithRender>, setRefresh: React.Dispatch<React.SetStateAction<boolean>>, type: string) => {
