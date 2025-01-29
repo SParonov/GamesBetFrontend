@@ -55,7 +55,7 @@ type Message = {
   timestamp: string;
 }
 
-const ChatUI = () => {
+export default function ChatUI() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -198,5 +198,3 @@ const ChatUI = () => {
     </Container>
     </>
 };
-
-export default ChatUI;

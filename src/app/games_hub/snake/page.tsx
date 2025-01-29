@@ -2,10 +2,13 @@
 
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import useCheckSession from "@/utils/useCheckSession";
-import { Typography } from "@mui/material";
+import { getCardActionsUtilityClass, Typography } from "@mui/material";
 import BackButton from "@/components/BackButton";
 import getHighScore from "@/utils/getHighScore";
 import updateGameData from "@/utils/updateGameData";
+import api from "@/utils/axios";
+import getUserEmail from "@/utils/getUserEmail";
+import { Router } from "next/router";
 
 
 const GRID_SIZE = 30; // Number of cells in each row and column
@@ -31,9 +34,19 @@ export default function Snake() {
   const [highScore, setHighScore] = useState(0)
   const [currScore, setCurrScore] = useState(0);
   const [gameHasStarted, setGameHasStarted] = useState(false);
+  const [coins, setCoins] = useState(0);
   const gridRef = useRef<HTMLDivElement>(null);
 
   useCheckSession(gameHasStarted);
+
+  // const getCoins = async () => {
+  //   try {
+  //     const res = await api.get(`/getCoins/${getUserEmail()}`);
+  //     setCoins(res.data.coins);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
   
   useEffect(() => {
     if (gridRef.current) {
@@ -41,6 +54,8 @@ export default function Snake() {
     }
 
     getHighScore(setHighScore, 'game1');
+    // setCoins(getCoins());
+    // getCoins();
   }, [])
 
   useEffect(() => {
@@ -156,6 +171,7 @@ export default function Snake() {
 
   return (
     <div style={{background: "linear-gradient(45deg, #9c27b0, #00bcd4)"}}>
+        <Typography style={{position: 'absolute', top: 0, right: 0, color: 'white', fontSize: 30} } >Coins: {coins}</Typography>
         <BackButton />
         <Typography style={{position: "absolute", left: 755, fontSize: 60, color: 'white'}}>SNAKE GAME</Typography>
         <Typography style={{position: 'absolute', left: "35%", fontSize: 20, top: "14%", color: 'white'}}>Press Enter to Start</Typography>
