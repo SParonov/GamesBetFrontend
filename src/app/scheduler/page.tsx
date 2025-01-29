@@ -2,10 +2,11 @@
 import GameMenu from "@/components/GameMenu";
 import Logo from "@/components/Logo";
 import api from "@/utils/axios";
-import { scheduler } from "@/utils/datagrid";
+import scheduler from "@/utils/datagrid";
 import getUserEmail from "@/utils/getUserEmail";
 import useCheckSession from "@/utils/useCheckSession";
 import { DataGrid } from "@mui/x-data-grid";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type Game = {
@@ -19,6 +20,8 @@ type Game = {
 export default function Scheduler() {
   useCheckSession();
 
+  const router = useRouter();
+
   const [scheduledGames, setScheduledGames] = useState([]);
 
   const getScheduledGames = async () => {
@@ -30,7 +33,7 @@ export default function Scheduler() {
       if (games) {
         setScheduledGames(games.map((game: Game, index: number) => ({
           rowID: index,
-          sheduleID: game.id, 
+          scheduleID: game.id, 
           friend: (game.player1 == getUserEmail()) ? game.player2 : game.player1,
           date: game.startDate,
           game: game.game,
@@ -54,7 +57,7 @@ export default function Scheduler() {
         <div style={{ maxWidth: "100%", width: "50%" }}>
           <DataGrid
             style={{ width: "100%", height: 500 }}
-            columns={scheduler}
+            columns={scheduler(router)}
             rows={scheduledGames}
             hideFooter
             initialState={{

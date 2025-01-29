@@ -3,19 +3,7 @@ import { useEffect, useState } from "react";
 import Logo from "@/components/Logo";
 import useCheckSession from "@/utils/useCheckSession";
 import getUserEmail from "@/utils/getUserEmail";
-import {
-  Alert,
-  Badge,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  List,
-  ListItem,
-  Snackbar,
-  Typography,
-} from "@mui/material";
+import { Badge, Button, Typography} from "@mui/material";
 import GameMenu from "@/components/GameMenu";
 import { DataGrid } from "@mui/x-data-grid";
 import { friendsCol, invite } from "@/utils/datagrid";

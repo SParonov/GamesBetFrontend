@@ -9,7 +9,7 @@ export const friendsCol: GridColDef[] = [
     { field: 'id', headerName: 'Email', width: 380},
 ];
 
-export const scheduler: GridColDef[] = [
+const scheduler = (router: any): GridColDef[] => [
     {field: 'rowID'},
     {field: 'scheduleID'},
     {field: 'friend', headerName: 'Friend', width: 300},
@@ -19,9 +19,18 @@ export const scheduler: GridColDef[] = [
 
     const gameStartDate = new Date(params.row.date);
     const now = new Date();
+    const DAY = 24 * 60 * 60 * 1000;
 
     if (now > gameStartDate) {
-        return <IconButton style={{marginLeft: 10, color: 'green'}} onClick = {() => console.log("clicked")}>
+        return <IconButton style={{marginLeft: 10, color: 'green'}} onClick = {() => {
+            if (now.getTime() < gameStartDate.getTime() + DAY) {
+                console.log(params.row)
+                router.push(`games_hub/tic_tac_toe_online/${params.row.scheduleID}?user=${getUserEmail()}&friend=${params.row.friend}`)
+            } else {
+                alert("Scheduled game has expired");
+                params.api.updateRows([{rowID: params.row.rowID, _action: 'delete' }])
+            }
+        }}>
             <CheckBoxIcon />
         </IconButton>
     } else {
@@ -30,6 +39,8 @@ export const scheduler: GridColDef[] = [
             </IconButton>
     }}}
 ];
+
+export default scheduler;
 
 const handleInvite = async (params: GridRenderCellParams<any, any, any, GridTreeNodeWithRender>, setRefresh: React.Dispatch<React.SetStateAction<boolean>>, type: string) => {
     const friendEmail = params.row.id;
