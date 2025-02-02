@@ -5,14 +5,12 @@ import useCheckSession from "@/utils/useCheckSession";
 import { useEffect, useState } from "react";
 import getScoreboard from "@/utils/getScoreboard";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { Margin } from "@mui/icons-material";
 
 
 export default function Scoreboard() {
     const [firstCol, setFirstCol] = useState([])
     const [secondCol, setSecondCol] = useState([])
-    //useCheckSession();
+    useCheckSession();
     useEffect(()=>{getScoreboard(setFirstCol, setSecondCol)},[])
     return <>
         <Logo />
