@@ -1,5 +1,5 @@
 "use client";
-import UserSelector from "@/components/UserSelector";  // Assuming UserSelector is used for friend selection
+import UserSelector from "@/components/UserSelector"; 
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Snackbar, Alert, InputLabel, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

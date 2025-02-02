@@ -24,8 +24,7 @@ const scheduler = (router: any): GridColDef[] => [
     if (now > gameStartDate) {
         return <IconButton style={{marginLeft: 10, color: 'green'}} onClick = {() => {
             if (now.getTime() < gameStartDate.getTime() + DAY) {
-                console.log(params.row)
-                router.push(`games_hub/${params.row.game}/${params.row.scheduleID}?user=${getUserEmail()}&friend=${params.row.friend}`)
+                router.push(`games_hub/${params.row.game}?ID=${params.row.scheduleID}&user=${getUserEmail()}&friend=${params.row.friend}`)
             } else {
                 alert("Scheduled game has expired");
                 params.api.updateRows([{rowID: params.row.rowID, _action: 'delete' }])

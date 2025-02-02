@@ -7,6 +7,7 @@ import GameButton from "@/components/GameButton";
 import { useState, useEffect } from "react";
 import hasGame from "@/utils/hasGame";
 import getUserEmail from "@/utils/getUserEmail";
+import getCoins from "@/utils/getCoins";
 
 export type sessionData = {
     CreatedAt: string,
@@ -16,9 +17,8 @@ export type sessionData = {
 }
 
 export default function GamesHub() {
-    const router = useRouter();
-    const pathname = usePathname();
     useCheckSession();
+
     const [loading, setLoading] = useState(true);
     const [game2, setGame2] = useState(true);
     const [game3, setGame3] = useState(true);
@@ -45,6 +45,7 @@ export default function GamesHub() {
             }
         };
         temp();
+        getCoins();
     },[])
     if(loading){
         return (
