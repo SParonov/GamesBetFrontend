@@ -49,10 +49,9 @@ export default function GuessingGame() {
     setAttempts(0);
   };
 
-  return (
-    <div style={{background: "linear-gradient(135deg, #00bcd4, #9c27b0)", height: '100vh'}}>
+  return <div style={{background: "linear-gradient(135deg, #00bcd4, #9c27b0)", height: '100vh', display: 'flex', justifyContent: 'center'}}>
     <BackButton />
-    <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow-lg max-w-sm mx-auto">
+    <div className="flex flex-col items-center p-8 bg-gray-100 rounded-lg shadow-lg max-w-sm my-40 fixed">
       <h1 className="text-xl font-bold mb-4">Number Guessing Game 🎯</h1>
       <p className="text-gray-700 mb-2">{message}</p>
       <input
@@ -78,6 +77,5 @@ export default function GuessingGame() {
       <p className="text-gray-500 mt-2">Score: {score}</p>
       <p className="text-gray-500 mt-2">Highcore: {highscore}</p>
     </div>
-    </div>
-  );
+  </div>
 }

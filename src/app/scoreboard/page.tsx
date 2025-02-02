@@ -15,9 +15,9 @@ export default function Scoreboard() {
     return <>
         <Logo />
         <GameMenu current = "scoreboard"/>
-        <div style={{marginTop: '100px'}}>
+        <div style={{marginTop: '100px', marginLeft: 250, marginRight: 250}}>
         <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+        <Table sx={{ minWidth: 650}} size="small" aria-label="a dense table">
             <TableHead>
             <TableRow>
                 <TableCell>Email</TableCell>
