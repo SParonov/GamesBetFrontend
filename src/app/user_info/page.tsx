@@ -10,6 +10,7 @@ import { friendsCol, invite } from "@/utils/datagrid";
 import api from "@/utils/axios";
 import UserSelector from "@/components/UserSelector";
 import getFriends from "@/utils/getFriends";
+import hasBadge from "@/utils/hasBadge";
 
 export default function UserInfo() {
   const [friends, setFriends] = useState([]);
@@ -25,12 +26,37 @@ export default function UserInfo() {
 
   const [email, setEmail] = useState<string | undefined>("");
   const [refresh, setRefresh] = useState(false);
+  const [badge1, setBadge1] = useState(false);
+  const [badge2, setBadge2] = useState(false);
+  const [badge3, setBadge3] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const x = async () => {
+      try{
+      const res1=Boolean(await hasBadge("Badge1", getUserEmail()));
+      setBadge1(res1);
+      const res2=Boolean(await hasBadge("Badge2", getUserEmail()));
+      setBadge2(res2);
+      const res3=Boolean(await hasBadge("Badge3", getUserEmail()));
+      setBadge3(res3);
+      }
+      finally{
+        setLoading(false);
+      }
+    }
     const email = getUserEmail();
     setEmail(email);
+    x();
   }, []);
 
+  // if(loading){
+  //   return (
+  //       <div>
+  //         <h1>Loading...</h1>
+  //       </div>
+  //     );
+  // }
 
   const getPottentialNewFriends = async () => {
     try {
@@ -96,6 +122,9 @@ export default function UserInfo() {
               height: 60,
               borderRadius: "50%",
               marginLeft: 25,
+              backgroundSize: 'cover', 
+              backgroundPosition: 'center',
+              ...(badge1 && {backgroundImage : "url(/img/Badge1.png)"})
             }}
           />
           <Badge
@@ -107,6 +136,9 @@ export default function UserInfo() {
               height: 60,
               borderRadius: "50%",
               marginLeft: 45,
+              backgroundSize: 'cover', 
+              backgroundPosition: 'center',
+              ...(badge2 && {backgroundImage : "url(/img/Badge2.png)"})
             }}
           />
           <Badge
@@ -118,6 +150,9 @@ export default function UserInfo() {
               height: 60,
               borderRadius: "50%",
               marginLeft: 45,
+              backgroundSize: 'cover', 
+              backgroundPosition: 'center',
+              ...(badge3 && {backgroundImage : "url(/img/Badge3.png)"})
             }}
           />
         </div>
