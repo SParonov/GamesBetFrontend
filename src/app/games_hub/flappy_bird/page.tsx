@@ -6,7 +6,8 @@ import useCheckSession from "@/utils/useCheckSession";
 import styled from "@emotion/styled";
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-
+import isAnActivityCompleted from "@/utils/IsAnActivityCompleted";
+import getUserEmail from "@/utils/getUserEmail";
 interface BackgroundProps {
   height: number;
   width: number;
@@ -101,6 +102,7 @@ export default function FlappyBird() {
       (topObj || bottomObj)
     ) {
       setBirspos(300);
+      isAnActivityCompleted(getUserEmail(),"Game3", score);
       setIsStart(false);
     }
   }, [isStart, birdpos, objHeight, objPos]);

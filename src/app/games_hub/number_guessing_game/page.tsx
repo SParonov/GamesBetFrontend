@@ -5,6 +5,8 @@ import { useState } from "react";
 import getHighScore from "@/utils/getHighScore";
 import updateGameData from "@/utils/updateGameData";
 import useCheckSession from "@/utils/useCheckSession";
+import isAnActivityCompleted from "@/utils/IsAnActivityCompleted";
+import getUserEmail from "@/utils/getUserEmail";
 
 export default function GuessingGame() {
   
@@ -37,6 +39,7 @@ export default function GuessingGame() {
     } else {
       updateGameData("game4", score-10, score-10);
       setMessage(`🎉 Correct! You guessed it in ${attempts + 1} attempts.`);
+      isAnActivityCompleted(getUserEmail(), "Game4", score);
     }
   };
 

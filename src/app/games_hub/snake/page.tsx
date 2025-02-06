@@ -9,6 +9,7 @@ import updateGameData from "@/utils/updateGameData";
 import api from "@/utils/axios";
 import getUserEmail from "@/utils/getUserEmail";
 import { Router } from "next/router";
+import isAnActivityCompleted from "@/utils/IsAnActivityCompleted";
 
 
 const GRID_SIZE = 30; // Number of cells in each row and column
@@ -60,7 +61,7 @@ export default function Snake() {
 
   useEffect(() => {
     if(gameOver == false) return;
-
+    isAnActivityCompleted(getUserEmail(), "Game1", currScore);
     updateGameData('game1', currScore, highScore);
   }, [gameOver])
 
