@@ -5,9 +5,11 @@ import removeActivity from "./removeActivity";
 
 export default async function isAnActivityCompleted(Email:string|undefined, Game:string, Score:number){
     const res=await api.post("/getActivities", {Email:Email});
+    if(res.data!=undefined){
     res.data.map((activity:{RequiredCoins:number, Game:string, Reward:number})=>{
         if(Game==activity.Game&&Score>=activity.RequiredCoins){
             removeActivity(Email, activity.RequiredCoins, activity.Game, activity.Reward);
         }
     })
+    }
 }

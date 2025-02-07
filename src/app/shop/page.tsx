@@ -5,181 +5,121 @@ import useCheckSession from "@/utils/useCheckSession";
 import buyGame from "@/utils/buyGame";
 import getUserEmail from "@/utils/getUserEmail";
 import { useEffect } from "react";
-import { Button, Typography, Box } from "@mui/material";
+import { Button, Typography, Box, Container, Paper, Grid } from "@mui/material";
 import { useState } from "react";
 import hasGame from "@/utils/hasGame";
 import buyBadge from "@/utils/buyBadge";
 import hasBadge from "@/utils/hasBadge";
+import getCoins from "@/utils/getCoins";
 
 export default function Shop() {
-
     useCheckSession();
     const [loading, setLoading] = useState(true);
-    const [game2, setGame2] = useState(true);
-    const [game3, setGame3] = useState(true);
-    const [game4, setGame4] = useState(true);
-    const [game5, setGame5] = useState(true);
-    const [game6, setGame6] = useState(true);
-    const [badge1, setBadge1] = useState(true);
-    const [badge2, setBadge2] = useState(true);
-    const [badge3, setBadge3] = useState(true);
-    useEffect(()=>{
-        const temp = async () => {
-            try{
-                const res2=Boolean(await hasGame("Game2", getUserEmail()));
-                setGame2(res2);
-                const res3=Boolean(await hasGame("Game3", getUserEmail()));
-                setGame3(res3);
-                const res4=Boolean(await hasGame("Game4", getUserEmail()));
-                setGame4(res4);
-                const res5=Boolean(await hasGame("Game5", getUserEmail()));
-                setGame5(res5);
-                const res6=Boolean(await hasGame("Game6", getUserEmail()));
-                setGame6(res6);
-                const res7=Boolean(await hasBadge("Badge1", getUserEmail()));
-                setBadge1(res7);
-                const res8=Boolean(await hasBadge("Badge2", getUserEmail()));
-                setBadge2(res8);
-                const res9=Boolean(await hasBadge("Badge3", getUserEmail()));
-                setBadge3(res9);
-                
-            }
-            finally{
+    const [gameStates, setGameStates] = useState({
+        game2: true, game3: true, game4: true, game5: true, game6: true,
+        badge1: true, badge2: true, badge3: true
+    });
+    const [coins, setCoins] = useState(getCoins());
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [
+                    game2, game3, game4, game5, game6,
+                    badge1, badge2, badge3
+                ] = await Promise.all([
+                    hasGame("Game2", getUserEmail()),
+                    hasGame("Game3", getUserEmail()),
+                    hasGame("Game4", getUserEmail()),
+                    hasGame("Game5", getUserEmail()),
+                    hasGame("Game6", getUserEmail()),
+                    hasBadge("Badge1", getUserEmail()),
+                    hasBadge("Badge2", getUserEmail()),
+                    hasBadge("Badge3", getUserEmail()),
+                ]);
+
+                setGameStates({
+                    game2: Boolean(game2), game3: Boolean(game3),
+                    game4: Boolean(game4), game5: Boolean(game5),
+                    game6: Boolean(game6), badge1: Boolean(badge1),
+                    badge2: Boolean(badge2), badge3: Boolean(badge3)
+                });
+            } finally {
                 setLoading(false);
             }
         };
-        temp();
-    },[])
-    if(loading){
-        return (
-            <div>
-              <h1>Loading...</h1>
-            </div>
-          );
-    }
+        fetchData();
+    }, [coins]);
 
-    return <>
-        <Logo />
-        <GameMenu current = "shop"/>
-        <div>
-        <Button 
-        sx={{width: 175,
-            height: 175,
-            top: 200,
-            left : 100,
-            //marginLeft: 5, 
-            backgroundColor: 'green',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundImage: "url(/img/slot_machine_game.avif)"}}
-        variant="contained"
-        onClick={()=>{buyGame("Game2", getUserEmail(), 100)}}
-        disabled={game2} />
+    if(loading) return <Typography variant="h4" sx={{ p: 4 }}>Loading...</Typography>;
 
-        100 Coins
-        <Button 
-        sx={{width: 175,
-            height: 175,
-            top: 200,
-            left : 100,
-            marginLeft: 5, 
-            backgroundColor: 'green',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundImage: "url(/img/flappy_bird_game.png)"}}
-        variant="contained"
-        onClick={()=>{buyGame("Game3", getUserEmail(), 200)}}
-        disabled={game3} />
-        200 Coins
-        <Button 
-        sx={{width: 175,
-            height: 175,
-            top: 200,
-            left : 100,
-            marginLeft: 5, 
-            backgroundColor: 'green',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundImage: "url(/img/number_guessing_game.webp)"}}
-        variant="contained"
-        onClick={()=>{buyGame("Game4", getUserEmail(), 300)}}
-        disabled={game4} />
-        300 Coins
-        <Button 
-        sx={{width: 175,
-            height: 175,
-            top: 200,
-            left : 100,
-            marginLeft: 5, 
-            backgroundColor: 'green',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundImage: "url(/img/tic_tac_toe.jpg)"}}
-        variant="contained"
-        onClick={()=>{buyGame("Game5", getUserEmail(), 400)}}
-        disabled={game5} />
-        400 Coins
-        <Button 
-        sx={{width: 175,
-            height: 175,
-            top: 200,
-            left : 100,
-            marginLeft: 5, 
-            backgroundColor: 'green',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundImage: "url(/img/number_guessing_game.webp)"}}
-        variant="contained"
-        onClick={()=>{buyGame("Game6", getUserEmail(), 500)}}
-        disabled={game6} />
-        500 Coins
-        </div>
-        <div>
-        <Button 
-        sx={{width: 175,
-            height: 175,
-            top: 50,
-            left : 100,
-            marginLeft: 35, 
-            marginTop:40,
-            backgroundColor: 'green',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundImage: "url(/img/Badge1.png)"}}
-        variant="contained"
-        onClick={()=>{buyBadge("Badge1", getUserEmail(), 40)}}
-        disabled={badge1} />
-        Coins 40
-        <Button 
-        sx={{width: 175,
-            height: 175,
-            top: 50,
-            left : 100,
-            marginLeft: 5, 
-            marginTop:40, 
-            backgroundColor: 'green',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundImage: "url(/img/Badge2.png)"}}
-        variant="contained"
-        onClick={()=>{buyBadge("Badge2", getUserEmail(), 400)}}
-        disabled={badge2} />
-        400 Coins
-        <Button 
-        sx={{width: 175,
-            height: 175,
-            top: 50,
-            left : 100,
-            marginLeft: 5, 
-            marginTop:40,
-            backgroundColor: 'green',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundImage: "url(/img/Badge3.png)"}}
-        variant="contained"
-        onClick={()=>{buyBadge("Badge3", getUserEmail(), 400)}}
-        disabled={badge3} />
-        400 Coins
-        </div>
-    </>
+    const createGameButton = (gameId: string, price: number, image: string, disabled: boolean) => (
+        <Button
+            variant="contained"
+            disabled={disabled}
+            onClick={async () => {
+                await buyGame(gameId, getUserEmail(), price);
+                setCoins(getCoins());
+            }}
+            sx={{
+                width: 200,
+                height: 200,
+                m: 2,
+                backgroundImage: `url(/img/${image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                opacity: disabled ? 0.5 : 1,
+                position: 'relative',
+                '&:hover': { opacity: disabled ? 0.5 : 0.9 },
+                transition: 'opacity 0.3s'
+            }}
+        >
+            <Box sx={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                bgcolor: 'rgba(0,0,0,0.7)',
+                color: 'white',
+                p: 1,
+                textAlign: 'center'
+            }}>
+                <Typography variant="body1">{gameId}</Typography>
+                <Typography variant="subtitle2">{price} Coins</Typography>
+            </Box>
+        </Button>
+    );
+
+    return (
+        <>
+            <Logo />
+            <GameMenu current="shop" />
+            
+            <Paper elevation={3} sx={{ p: 3, m: 3, bgcolor: 'background.paper', marginTop:10}}>
+                <Typography variant="h4" sx={{ mb: 3, textAlign: 'center', color: 'primary.main' }}>
+                    🪙 You have {coins} coins
+                </Typography>
+
+                <Typography variant="h5" sx={{ mt: 4, mb: 2, color: 'text.secondary' }}>
+                    Available Games
+                </Typography>
+                <Grid container justifyContent="center">
+                    {createGameButton("Game2", 100, "slot_machine_game.avif", gameStates.game2)}
+                    {createGameButton("Game3", 200, "flappy_bird_game.png", gameStates.game3)}
+                    {createGameButton("Game4", 300, "number_guessing_game.webp", gameStates.game4)}
+                    {createGameButton("Game5", 400, "tic_tac_toe.jpg", gameStates.game5)}
+                    {createGameButton("Game6", 500, "number_guessing_game.webp", gameStates.game6)}
+                </Grid>
+
+                <Typography variant="h5" sx={{ mt: 6, mb: 2, color: 'text.secondary' }}>
+                    Premium Badges
+                </Typography>
+                <Grid container justifyContent="center">
+                    {createGameButton("Badge1", 40, "Badge1.png", gameStates.badge1)}
+                    {createGameButton("Badge2", 400, "Badge2.png", gameStates.badge2)}
+                    {createGameButton("Badge3", 400, "Badge3.png", gameStates.badge3)}
+                </Grid>
+            </Paper>
+        </>
+    );
 }
