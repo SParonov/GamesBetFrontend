@@ -16,7 +16,7 @@ export default function Shop() {
     useCheckSession();
     const [loading, setLoading] = useState(true);
     const [gameStates, setGameStates] = useState({
-        game2: true, game3: true, game4: true, game5: true, game6: true,
+        game2: true, game3: true, game4: true, game5: true,
         badge1: true, badge2: true, badge3: true
     });
     const [coins, setCoins] = useState(getCoins());
@@ -25,14 +25,13 @@ export default function Shop() {
         const fetchData = async () => {
             try {
                 const [
-                    game2, game3, game4, game5, game6,
+                    game2, game3, game4, game5,
                     badge1, badge2, badge3
                 ] = await Promise.all([
                     hasGame("Game2", getUserEmail()),
                     hasGame("Game3", getUserEmail()),
                     hasGame("Game4", getUserEmail()),
                     hasGame("Game5", getUserEmail()),
-                    hasGame("Game6", getUserEmail()),
                     hasBadge("Badge1", getUserEmail()),
                     hasBadge("Badge2", getUserEmail()),
                     hasBadge("Badge3", getUserEmail()),
@@ -41,7 +40,7 @@ export default function Shop() {
                 setGameStates({
                     game2: Boolean(game2), game3: Boolean(game3),
                     game4: Boolean(game4), game5: Boolean(game5),
-                    game6: Boolean(game6), badge1: Boolean(badge1),
+                    badge1: Boolean(badge1),
                     badge2: Boolean(badge2), badge3: Boolean(badge3)
                 });
             } finally {
@@ -108,7 +107,6 @@ export default function Shop() {
                     {createGameButton("Game3", 200, "flappy_bird_game.png", gameStates.game3)}
                     {createGameButton("Game4", 300, "number_guessing_game.webp", gameStates.game4)}
                     {createGameButton("Game5", 400, "tic_tac_toe.jpg", gameStates.game5)}
-                    {createGameButton("Game6", 500, "number_guessing_game.webp", gameStates.game6)}
                 </Grid>
 
                 <Typography variant="h5" sx={{ mt: 6, mb: 2, color: 'text.secondary' }}>

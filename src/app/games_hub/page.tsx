@@ -24,7 +24,6 @@ export default function GamesHub() {
     const [game3, setGame3] = useState(true);
     const [game4, setGame4] = useState(true);
     const [game5, setGame5] = useState(true);
-    const [game6, setGame6] = useState(true);
     useEffect(()=>{
         const temp = async () => {
             try{
@@ -36,9 +35,6 @@ export default function GamesHub() {
                 setGame4(res4);
                 const res5=Boolean(await hasGame("Game5", getUserEmail()));
                 setGame5(res5);
-                const res6=Boolean(await hasGame("Game6", getUserEmail()));
-                setGame6(res6);
-                
             }
             finally{
                 setLoading(false);
@@ -66,7 +62,6 @@ export default function GamesHub() {
         </div>
         <div style={{position: 'fixed', display: 'flex', justifyContent:'center', top: "50%", left: 0, right: 0}}>
             <GameButton marginLeft={0} game="/online_gateway?game=tic_tac_toe_online" imgUrl='/img/tic_tac_toe.jpg' unlocked={game5}/>
-            <GameButton marginLeft={10} game="/online_gateway?game=memory_game" imgUrl='/img/slot_machine_game.avif' unlocked={game6}/>
         </div>
     </>
 }
